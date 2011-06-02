@@ -1,0 +1,302 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2B005AD1139776E900988D55 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B005AD0139776E900988D55 /* Cocoa.framework */; };
+		2B005ADB139776E900988D55 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2B005AD9139776E900988D55 /* InfoPlist.strings */; };
+		2B005ADD139776E900988D55 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B005ADC139776E900988D55 /* main.m */; };
+		2B005AE1139776E900988D55 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2B005ADF139776E900988D55 /* Credits.rtf */; };
+		2B005AE4139776E900988D55 /* LBSegmentedButtonAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B005AE3139776E900988D55 /* LBSegmentedButtonAppDelegate.m */; };
+		2B005AE7139776EA00988D55 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2B005AE5139776EA00988D55 /* MainMenu.xib */; };
+		2B005AF1139776FC00988D55 /* Background.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B005AEE139776FC00988D55 /* Background.m */; };
+		2B005AF2139776FC00988D55 /* LBSegmentedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B005AF0139776FC00988D55 /* LBSegmentedButton.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		2B005ACC139776E900988D55 /* LBSegmentedButton.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LBSegmentedButton.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B005AD0139776E900988D55 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		2B005AD3139776E900988D55 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		2B005AD4139776E900988D55 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		2B005AD5139776E900988D55 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		2B005AD8139776E900988D55 /* LBSegmentedButton-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "LBSegmentedButton-Info.plist"; sourceTree = "<group>"; };
+		2B005ADA139776E900988D55 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2B005ADC139776E900988D55 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		2B005ADE139776E900988D55 /* LBSegmentedButton-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LBSegmentedButton-Prefix.pch"; sourceTree = "<group>"; };
+		2B005AE0139776E900988D55 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		2B005AE2139776E900988D55 /* LBSegmentedButtonAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LBSegmentedButtonAppDelegate.h; sourceTree = "<group>"; };
+		2B005AE3139776E900988D55 /* LBSegmentedButtonAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LBSegmentedButtonAppDelegate.m; sourceTree = "<group>"; };
+		2B005AE6139776EA00988D55 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		2B005AED139776FC00988D55 /* Background.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Background.h; sourceTree = "<group>"; };
+		2B005AEE139776FC00988D55 /* Background.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Background.m; sourceTree = "<group>"; };
+		2B005AEF139776FC00988D55 /* LBSegmentedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LBSegmentedButton.h; sourceTree = "<group>"; };
+		2B005AF0139776FC00988D55 /* LBSegmentedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LBSegmentedButton.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2B005AC9139776E900988D55 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B005AD1139776E900988D55 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2B005AC1139776E900988D55 = {
+			isa = PBXGroup;
+			children = (
+				2B005AD6139776E900988D55 /* LBSegmentedButton */,
+				2B005ACF139776E900988D55 /* Frameworks */,
+				2B005ACD139776E900988D55 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2B005ACD139776E900988D55 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2B005ACC139776E900988D55 /* LBSegmentedButton.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2B005ACF139776E900988D55 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2B005AD0139776E900988D55 /* Cocoa.framework */,
+				2B005AD2139776E900988D55 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2B005AD2139776E900988D55 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2B005AD3139776E900988D55 /* AppKit.framework */,
+				2B005AD4139776E900988D55 /* CoreData.framework */,
+				2B005AD5139776E900988D55 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		2B005AD6139776E900988D55 /* LBSegmentedButton */ = {
+			isa = PBXGroup;
+			children = (
+				2B005AED139776FC00988D55 /* Background.h */,
+				2B005AEE139776FC00988D55 /* Background.m */,
+				2B005AEF139776FC00988D55 /* LBSegmentedButton.h */,
+				2B005AF0139776FC00988D55 /* LBSegmentedButton.m */,
+				2B005AE2139776E900988D55 /* LBSegmentedButtonAppDelegate.h */,
+				2B005AE3139776E900988D55 /* LBSegmentedButtonAppDelegate.m */,
+				2B005AE5139776EA00988D55 /* MainMenu.xib */,
+				2B005AD7139776E900988D55 /* Supporting Files */,
+			);
+			path = LBSegmentedButton;
+			sourceTree = "<group>";
+		};
+		2B005AD7139776E900988D55 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2B005AD8139776E900988D55 /* LBSegmentedButton-Info.plist */,
+				2B005AD9139776E900988D55 /* InfoPlist.strings */,
+				2B005ADC139776E900988D55 /* main.m */,
+				2B005ADE139776E900988D55 /* LBSegmentedButton-Prefix.pch */,
+				2B005ADF139776E900988D55 /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2B005ACB139776E900988D55 /* LBSegmentedButton */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2B005AEA139776EA00988D55 /* Build configuration list for PBXNativeTarget "LBSegmentedButton" */;
+			buildPhases = (
+				2B005AC8139776E900988D55 /* Sources */,
+				2B005AC9139776E900988D55 /* Frameworks */,
+				2B005ACA139776E900988D55 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LBSegmentedButton;
+			productName = LBSegmentedButton;
+			productReference = 2B005ACC139776E900988D55 /* LBSegmentedButton.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2B005AC3139776E900988D55 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 2B005AC6139776E900988D55 /* Build configuration list for PBXProject "LBSegmentedButton" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 2B005AC1139776E900988D55;
+			productRefGroup = 2B005ACD139776E900988D55 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2B005ACB139776E900988D55 /* LBSegmentedButton */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2B005ACA139776E900988D55 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B005ADB139776E900988D55 /* InfoPlist.strings in Resources */,
+				2B005AE1139776E900988D55 /* Credits.rtf in Resources */,
+				2B005AE7139776EA00988D55 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2B005AC8139776E900988D55 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2B005ADD139776E900988D55 /* main.m in Sources */,
+				2B005AE4139776E900988D55 /* LBSegmentedButtonAppDelegate.m in Sources */,
+				2B005AF1139776FC00988D55 /* Background.m in Sources */,
+				2B005AF2139776FC00988D55 /* LBSegmentedButton.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		2B005AD9139776E900988D55 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2B005ADA139776E900988D55 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		2B005ADF139776E900988D55 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2B005AE0139776E900988D55 /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		2B005AE5139776EA00988D55 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2B005AE6139776EA00988D55 /* en */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		2B005AE8139776EA00988D55 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		2B005AE9139776EA00988D55 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		2B005AEB139776EA00988D55 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LBSegmentedButton/LBSegmentedButton-Prefix.pch";
+				INFOPLIST_FILE = "LBSegmentedButton/LBSegmentedButton-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		2B005AEC139776EA00988D55 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "LBSegmentedButton/LBSegmentedButton-Prefix.pch";
+				INFOPLIST_FILE = "LBSegmentedButton/LBSegmentedButton-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2B005AC6139776E900988D55 /* Build configuration list for PBXProject "LBSegmentedButton" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B005AE8139776EA00988D55 /* Debug */,
+				2B005AE9139776EA00988D55 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2B005AEA139776EA00988D55 /* Build configuration list for PBXNativeTarget "LBSegmentedButton" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2B005AEB139776EA00988D55 /* Debug */,
+				2B005AEC139776EA00988D55 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2B005AC3139776E900988D55 /* Project object */;
+}
