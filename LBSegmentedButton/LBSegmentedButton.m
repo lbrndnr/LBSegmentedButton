@@ -291,14 +291,25 @@
             self.selectedSegment = i;
             
             [self setNeedsDisplay:YES];
-            
-            [target performSelector:@selector(buttonClicked)];
         }
     }
 }
 
 -(void)mouseUp:(NSEvent *)theEvent {
     [super mouseUp:theEvent];
+    
+    NSPoint locationInWindow = [theEvent locationInWindow];
+    NSPoint location = [self convertPoint:locationInWindow fromView:[self.window contentView]];
+    
+    if (CGRectContainsPoint(self.bounds, NSPointToCGPoint(location))) {
+        if (self.selectedSegment == 0) {
+            [target performSelector:@selector(buttonClicked)];
+        }
+        else {
+            [target performSelector:@selector(buttonClicked)];
+        }
+    }
+    
     self.selectedSegment = -1;
     [self setNeedsDisplay:YES];
 }
