@@ -1332,10 +1332,9 @@
 						<object class="NSCustomView" id="976379557">
 							<reference key="NSNextResponder" ref="439893737"/>
 							<int key="NSvFlags">268</int>
-							<string key="NSFrame">{{97, 125}, {286, 111}}</string>
+							<string key="NSFrame">{{97, 124}, {286, 112}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:499</string>
 							<string key="NSClassName">LBSegmentedButton</string>
 						</object>

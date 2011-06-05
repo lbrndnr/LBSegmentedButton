@@ -20,11 +20,24 @@
 #define gradientColor1 [NSColor colorWithCalibratedRed:230.0/255.0 green:230.0/255.0 blue:230.0/255.0 alpha:1.0]
 #define gradientColor2 [NSColor colorWithCalibratedRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:1.0]
 
+NSInteger previouslySelectedSegment = -1;
+
 @implementation LBSegmentedButton
 
-@synthesize borderColor, cellHeight, radius, titles, target, selectedSegment;
+@synthesize borderColor, cellHeight, radius, titles, target;
 
 #pragma mark Accessors
+
+-(NSInteger)selectedSegment {
+    return selectedSegment;
+}
+
+-(void)setSelectedSegment:(NSInteger)value {
+    if (selectedSegment != value) {
+        selectedSegment = value;
+        [self setNeedsDisplay:YES];
+    }
+}
 
 -(NSInteger)numberOfCells {
     if (self.titles) {
@@ -65,8 +78,8 @@
         self.cellHeight = DEFAULT_cellHeight;
         self.radius = DEFAULT_radius;
         
-        if (NSHeight(frameRect) != [self numberOfCells] * (self.cellHeight +2)) {
-            NSLog(@"The height doesn't match to the cellHeight. The proper height would be %ld", [self numberOfCells] * (self.cellHeight +2));
+        if (NSHeight(frameRect) != [self numberOfCells] * (self.cellHeight +2)+1) {
+            NSLog(@"The height doesn't match to the cellHeight. The proper height would be %ld", [self numberOfCells] * (self.cellHeight +2)+1);
         }
         
     }
@@ -216,10 +229,10 @@
         
         CGPathMoveToPoint(box, NULL, minX, minY+1);
         CGPathAddLineToPoint(box, NULL, maxX, minY+1);
-        CGPathAddLineToPoint(box, NULL, maxX, minY+1+self.cellHeight-self.radius);
-        CGPathAddQuadCurveToPoint(box, NULL, maxX, minY+1+self.cellHeight, maxX-self.radius, minY+1+self.cellHeight);
-        CGPathAddLineToPoint(box, NULL, minX+self.radius, minY+1+self.cellHeight);
-        CGPathAddQuadCurveToPoint(box, NULL, minX, minY+1+self.cellHeight, minX, minY+1+self.cellHeight-self.radius);
+        CGPathAddLineToPoint(box, NULL, maxX, minY+self.cellHeight-self.radius+2);
+        CGPathAddQuadCurveToPoint(box, NULL, maxX, minY+self.cellHeight+2, maxX-self.radius, minY+self.cellHeight+2);
+        CGPathAddLineToPoint(box, NULL, minX+self.radius, minY+self.cellHeight+2);
+        CGPathAddQuadCurveToPoint(box, NULL, minX, minY+self.cellHeight+2, minX, minY+self.cellHeight-self.radius+2);
         CGPathAddLineToPoint(box, NULL, minX, minY+1);
         CGPathCloseSubpath(box);
         
@@ -289,10 +302,16 @@
     for (int i = 0; i<[self numberOfCells]; i++) {
         if (CGRectContainsPoint(CGRectMake(0, i*(self.cellHeight+3), NSWidth(self.bounds), self.cellHeight+3), NSPointToCGPoint(location)) ) {
             self.selectedSegment = i;
-            
-            [self setNeedsDisplay:YES];
+            previouslySelectedSegment = i;
         }
     }
+}
+
+-(void)mouseDragged:(NSEvent *)theEvent {
+    NSPoint locationInWindow = [theEvent locationInWindow];
+    NSPoint location = [self convertPoint:locationInWindow fromView:[self.window contentView]];
+    
+    self.selectedSegment = (CGRectContainsPoint(self.bounds, NSPointToCGPoint(location))) ? previouslySelectedSegment : -1;
 }
 
 -(void)mouseUp:(NSEvent *)theEvent {
@@ -311,7 +330,7 @@
     }
     
     self.selectedSegment = -1;
-    [self setNeedsDisplay:YES];
+    previouslySelectedSegment = -1;
 }
 
 #pragma mark -
