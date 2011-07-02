@@ -17,7 +17,7 @@ typedef enum _RoundedRectPartType {
 @interface LBSegmentedButton : NSView {
     
     //Drawing Infos
-    NSArray* titles;
+    NSDictionary* data;
     NSInteger cellHeight;
     NSInteger radius;
     NSColor* borderColor;
@@ -27,7 +27,7 @@ typedef enum _RoundedRectPartType {
     NSInteger selectedSegment;
 }
 
-@property (readwrite, copy) NSArray* titles;
+@property (readwrite, copy) NSDictionary* data;
 @property (readwrite) NSInteger cellHeight;
 @property (readwrite) NSInteger radius;
 @property (readwrite, copy) NSColor* borderColor;
@@ -35,7 +35,7 @@ typedef enum _RoundedRectPartType {
 @property (readwrite, retain) IBOutlet id target;
 @property (readwrite) NSInteger selectedSegment;
 
--(id)initWithFrame:(NSRect)frameRect titles:(NSArray*)bottomUpTitles target:(id)target;
+-(id)initWithFrame:(NSRect)frameRect titles:(NSArray*)titles selectors:(NSArray*)selectorsAsStrings target:(id)target;
 
 -(NSInteger)numberOfCells;
 

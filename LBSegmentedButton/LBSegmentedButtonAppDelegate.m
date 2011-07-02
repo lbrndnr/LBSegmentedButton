@@ -12,7 +12,7 @@
 
 @synthesize window;
 
--(void)buttonClicked {
+-(void)buttonClicked:(id)sender {
     NSLog(@"YEEEEHAAA");
 }
 

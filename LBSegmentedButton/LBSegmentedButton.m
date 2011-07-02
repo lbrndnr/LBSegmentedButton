@@ -24,7 +24,7 @@ NSInteger previouslySelectedSegment = -1;
 
 @implementation LBSegmentedButton
 
-@synthesize borderColor, cellHeight, radius, titles, target;
+@synthesize borderColor, cellHeight, radius, data, target;
 
 #pragma mark Accessors
 
@@ -40,8 +40,8 @@ NSInteger previouslySelectedSegment = -1;
 }
 
 -(NSInteger)numberOfCells {
-    if (self.titles) {
-        return [self.titles count];
+    if (self.data) {
+        return [self.data count];
     }
     return 0;
 }
@@ -49,11 +49,11 @@ NSInteger previouslySelectedSegment = -1;
 #pragma mark -
 #pragma mark Initialization
 
--(id)initWithFrame:(NSRect)frameRect titles:(NSArray *)values target:(id)value {
+-(id)initWithFrame:(NSRect)frameRect titles:(NSArray *)allTitles selectors:(NSArray *)allSelectors target:(id)targetValue {
     self = [super initWithFrame:frameRect];
     if (self) {
-        self.titles = values;
-        self.target = value;
+        self.data = [NSDictionary dictionaryWithObjects:allSelectors forKeys:allTitles];
+        self.target = targetValue;
         
         self.selectedSegment = -1;
         
@@ -68,7 +68,7 @@ NSInteger previouslySelectedSegment = -1;
 -(id)initWithFrame:(NSRect)frameRect {
     self = [super initWithFrame:frameRect];
     if (self) {
-        self.titles = [NSArray arrayWithObjects:@"!", @"YOURSELF", @"CHECK", nil];
+        self.data = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"buttonClicked:",@"buttonClicked:",@"buttonClicked:", nil] forKeys:[NSArray arrayWithObjects:@"!", @"YOURSELF", @"CHECK", nil]];
         self.target = nil;
         
         self.selectedSegment = -1;
@@ -91,7 +91,7 @@ NSInteger previouslySelectedSegment = -1;
 
 -(void)dealloc {
     self.borderColor = nil;
-    self.titles = nil;
+    self.data = nil;
     self.target = nil;
     
     [super dealloc];
@@ -109,7 +109,7 @@ NSInteger previouslySelectedSegment = -1;
 
 -(void)drawTitles {
     int i = 0;
-    for (NSString* title in self.titles) {
+    for (NSString* title in self.data.allKeys) {
         NSTextField* label = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, NSWidth(self.bounds), 17)];
         
         long centerDistance = (self.cellHeight -17)/2;
@@ -321,11 +321,12 @@ NSInteger previouslySelectedSegment = -1;
     NSPoint location = [self convertPoint:locationInWindow fromView:[self.window contentView]];
     
     if (CGRectContainsPoint(self.bounds, NSPointToCGPoint(location))) {
-        if (self.selectedSegment == 0) {
-            [target performSelector:@selector(buttonClicked)];
-        }
-        else {
-            [target performSelector:@selector(buttonClicked)];
+        NSArray* allValues = self.data.allValues;
+        NSString* sel = [allValues objectAtIndex:self.selectedSegment];
+        SEL selector = NSSelectorFromString(sel);
+        
+        if ([self.target respondsToSelector:selector]) {
+            [self.target performSelector:selector withObject:self];
         }
     }
     
