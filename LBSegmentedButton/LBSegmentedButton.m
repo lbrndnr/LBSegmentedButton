@@ -126,6 +126,7 @@ NSInteger previouslySelectedSegment = -1;
         [label setFrameOrigin:NSMakePoint(0, borders+ centerDistance + i*self.cellHeight)];
         
         [self addSubview:label];
+        [label release];
         i++;
     }
 }
