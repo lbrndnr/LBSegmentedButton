@@ -24,7 +24,7 @@ NSInteger previouslySelectedSegment = -1;
 
 @implementation LBSegmentedButton
 
-@synthesize borderColor, cellHeight, radius, target;
+@synthesize borderColor, cellHeight, radius, data, target;
 
 #pragma mark Accessors
 
@@ -36,20 +36,6 @@ NSInteger previouslySelectedSegment = -1;
     if (selectedSegment != value) {
         selectedSegment = value;
         [self setNeedsDisplay:YES];
-    }
-}
-
--(NSDictionary*)data {
-    return data;
-}
-
--(void)setData:(NSDictionary *)value {
-    if (![data isEqualToDictionary:value]) {
-        [data release];
-        data = [value copy];
-        for (int i = 0; i< self.numberOfCells; i++) {
-            [self setNeedsDisplay:YES];
-        }
     }
 }
 
@@ -82,7 +68,7 @@ NSInteger previouslySelectedSegment = -1;
 -(id)initWithFrame:(NSRect)frameRect {
     self = [super initWithFrame:frameRect];
     if (self) {
-        self.data = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"buttonClicked:", @"buttonClicked:", @"buttonClicked:", nil] forKeys:[NSArray arrayWithObjects:@"!", @"YOURSELF", @"CHECK", nil]];
+        self.data = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"buttonClicked:",@"buttonClicked:",@"buttonClicked:", nil] forKeys:[NSArray arrayWithObjects:@"!", @"YOURSELF", @"CHECK", nil]];
         self.target = nil;
         
         self.selectedSegment = -1;
@@ -93,8 +79,7 @@ NSInteger previouslySelectedSegment = -1;
         self.radius = DEFAULT_radius;
         
         if (NSHeight(frameRect) != [self numberOfCells] * (self.cellHeight +2)+1) {
-            long properHeight = [self numberOfCells] * (self.cellHeight +2)+1;
-            NSLog(@"The height doesn't match to the cellHeight. The proper height would be %ld", properHeight);
+            NSLog(@"The height doesn't match to the cellHeight. The proper height would be %ld", [self numberOfCells] * (self.cellHeight +2)+1);
         }
         
     }
@@ -113,14 +98,20 @@ NSInteger previouslySelectedSegment = -1;
 }
 
 #pragma mark -
+#pragma mark Lifecycle
+
+-(void)awakeFromNib {
+    [self drawTitles];
+}
+
+#pragma mark -
 #pragma mark Drawing
 
--(void)drawTitleWithIndex:(NSInteger)i {
-    if ([self viewWithTag:i]) {
-        [(NSTextField*)[self viewWithTag:i] setStringValue:[self.data.allKeys objectAtIndex:i]];
-    }
-    else {
+-(void)drawTitles {
+    int i = 0;
+    for (NSString* title in self.data.allKeys) {
         NSTextField* label = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, NSWidth(self.bounds), 17)];
+        
         long centerDistance = (self.cellHeight -17)/2;
         long borders = (i+1)*2;
         
@@ -130,166 +121,173 @@ NSInteger previouslySelectedSegment = -1;
         [label setEditable:NO];
         [label setAlignment:NSCenterTextAlignment];
         [label setTextColor:darkTextColor];
-        [label setTag:i];
         
-        [label setStringValue:[self.data.allKeys objectAtIndex:i]];
+        [label setStringValue:title];
         [label setFrameOrigin:NSMakePoint(0, borders+ centerDistance + i*self.cellHeight)];
         
         [self addSubview:label];
         [label release];
+        i++;
     }
 }
 
--(void)drawCellInRect:(NSRect)rect index:(NSInteger)index {        
+-(void)drawCell:(RoundedRectPartType)type rect:(NSRect)rect index:(NSInteger)index {
     CGContextRef context = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
     
     CGFloat maxX = NSMaxX(rect);
     CGFloat minX = NSMinX(rect);
     CGFloat minY = NSMinY(rect);
     
-    if (self.selectedSegment != -1) {
-        if (self.numberOfCells == 1) {
+    if (type == bottomPart) {
+        
+        //Bottom shadow
+        CGMutablePathRef bottomShadow = CGPathCreateMutable();
+        
+        CGPathMoveToPoint(bottomShadow, NULL, minX, minY+self.radius);
+        
+        CGPathAddQuadCurveToPoint(bottomShadow, NULL, minX, minY, minX+self.radius , minY); //90degrees curve (left bottom)
+        CGPathAddLineToPoint(bottomShadow, NULL, maxX-self.radius, minY);
+        CGPathAddQuadCurveToPoint(bottomShadow, NULL, maxX, minY, maxX, self.radius); //90degrees curve (right bottom)
+        
+        [shadowColor setStroke];
+        CGContextAddPath(context, bottomShadow);
+        CGContextDrawPath(context, kCGPathStroke);
+         
+        //Box
+        
+        minY++;
+        
+        CGMutablePathRef box = CGPathCreateMutable();
+    
+        CGPathMoveToPoint(box, NULL, minX, self.cellHeight+3);
+        CGPathAddLineToPoint(box, NULL, minX, minY+self.radius);
+        CGPathAddQuadCurveToPoint(box, NULL, minX, minY, minX+self.radius , minY); //90degrees curve (left bottom)
+        CGPathAddLineToPoint(box, NULL, maxX-self.radius, minY);
+        CGPathAddQuadCurveToPoint(box, NULL, maxX, minY, maxX, minY+self.radius); //90degrees curve (right bottom)
+        CGPathAddLineToPoint(box, NULL, maxX, self.cellHeight+3);
+        
+        CGContextAddPath(context, box);
+        
+        [self.borderColor setStroke];
+        if (self.selectedSegment == index) {
             [highlightColor setFill];
-            NSRect boxRect = rect;
-            boxRect.size.height -=2;
-            boxRect.origin.y += 2;
-            NSBezierPath* box = [NSBezierPath bezierPathWithRoundedRect:boxRect xRadius:self.radius yRadius:self.radius];
-            [box fill];
+            CGContextDrawPath(context, kCGPathFillStroke);
         }
         else {
-            if (self.selectedSegment == index) {
-                [highlightColor setFill];
-                if (self.selectedSegment != 0 && self.selectedSegment != self.numberOfCells-1) {
-                    NSRectFill(rect);
-                }
-                else if (self.selectedSegment == 0) {
-                    minY += 2;
-                    
-                    //bottom
-                    
-                    CGMutablePathRef box = CGPathCreateMutable();
-                    
-                    CGPathMoveToPoint(box, NULL, minX, self.cellHeight+3);
-                    CGPathAddLineToPoint(box, NULL, minX, minY+self.radius);
-                    CGPathAddQuadCurveToPoint(box, NULL, minX, minY, minX+self.radius , minY); //90degrees curve (left bottom)
-                    CGPathAddLineToPoint(box, NULL, maxX-self.radius, minY);
-                    CGPathAddQuadCurveToPoint(box, NULL, maxX, minY, maxX, minY+self.radius); //90degrees curve (right bottom)
-                    CGPathAddLineToPoint(box, NULL, maxX, self.cellHeight+3);
-                    
-                    CGContextAddPath(context, box);
-                    CGContextDrawPath(context, kCGPathFill);
-                    
-                    CGPathRelease(box);
-                    
-                    minY -= 2;
-                }
-                else {
-                    minY -= 1;
-                    
-                    //top
-                    
-                    CGMutablePathRef box = CGPathCreateMutable();
-                    
-                    CGPathMoveToPoint(box, NULL, minX, minY+1);
-                    CGPathAddLineToPoint(box, NULL, maxX, minY+1);
-                    CGPathAddLineToPoint(box, NULL, maxX, minY+self.cellHeight-self.radius+2);
-                    CGPathAddQuadCurveToPoint(box, NULL, maxX, minY+self.cellHeight+2, maxX-self.radius, minY+self.cellHeight+2);
-                    CGPathAddLineToPoint(box, NULL, minX+self.radius, minY+self.cellHeight+2);
-                    CGPathAddQuadCurveToPoint(box, NULL, minX, minY+self.cellHeight+2, minX, minY+self.cellHeight-self.radius+2);
-                    CGPathAddLineToPoint(box, NULL, minX, minY+1);
-                    CGPathCloseSubpath(box);
-                    
-                    CGContextAddPath(context, box);
-                    CGContextDrawPath(context, kCGPathFill);
-                    
-                    CGPathRelease(box);
-                    
-                    minY += 1;
-                }
-            }
+            CGContextDrawPath(context, kCGPathStroke);
         }
+        
+        CGPathRelease(box);
+        CGPathRelease(bottomShadow);
     }
-    
-    if (index != 0) {
-        CGMutablePathRef separator = CGPathCreateMutable();
-        CGPathMoveToPoint(separator, NULL, minX, minY);
-        CGPathAddLineToPoint(separator, NULL, maxX, minY);
+    else if (type == middlePart) {
+        
+        //Box
+        
+        CGMutablePathRef box = CGPathCreateMutable();
+        
+        CGPathMoveToPoint(box, NULL, minX, minY+3+self.cellHeight);
+        CGPathAddLineToPoint(box, NULL, minX, minY+1);
+        CGPathAddLineToPoint(box, NULL, maxX, minY+1);
+        CGPathAddLineToPoint(box, NULL, maxX, minY+self.cellHeight+3);
+        
+        CGContextAddPath(context, box);
+        
+        [self.borderColor setStroke];
+        if (self.selectedSegment == index) {
+            [highlightColor setFill];
+            CGContextDrawPath(context, kCGPathFillStroke);
+        }
+        else {
+            CGContextDrawPath(context, kCGPathStroke);
+        }
+        
+        //Seperator shadow
         
         CGMutablePathRef shadow = CGPathCreateMutable();
-        CGPathMoveToPoint(shadow, NULL, minX, minY-1);
-        CGPathAddLineToPoint(shadow, NULL, maxX, minY-1);
         
-        //draw separator
-        [self.borderColor setStroke];
-        CGContextAddPath(context, separator);
-        CGContextDrawPath(context, kCGPathStroke);
+        CGPathMoveToPoint(shadow, NULL, minX+1, minY);
+        CGPathAddLineToPoint(shadow, NULL, maxX-1, minY);
         
-        CGPathRelease(separator);
+        if (self.selectedSegment+1==index) {
+            [highlightColor setStroke];
+        }
+        else {
+            [shadowColor setStroke];
+        }
         
-        //draw shadow
-        [shadowColor setStroke];
         CGContextAddPath(context, shadow);
         CGContextDrawPath(context, kCGPathStroke);
         
+        CGPathRelease(box);
         CGPathRelease(shadow);
     }
-
-    
-    [self drawTitleWithIndex:index];
+    else {
+        
+        //Box
+        
+        CGMutablePathRef box = CGPathCreateMutable();
+        
+        CGPathMoveToPoint(box, NULL, minX, minY+1);
+        CGPathAddLineToPoint(box, NULL, maxX, minY+1);
+        CGPathAddLineToPoint(box, NULL, maxX, minY+self.cellHeight-self.radius+2);
+        CGPathAddQuadCurveToPoint(box, NULL, maxX, minY+self.cellHeight+2, maxX-self.radius, minY+self.cellHeight+2);
+        CGPathAddLineToPoint(box, NULL, minX+self.radius, minY+self.cellHeight+2);
+        CGPathAddQuadCurveToPoint(box, NULL, minX, minY+self.cellHeight+2, minX, minY+self.cellHeight-self.radius+2);
+        CGPathAddLineToPoint(box, NULL, minX, minY+1);
+        CGPathCloseSubpath(box);
+        
+        CGContextAddPath(context, box);
+        
+        [self.borderColor setStroke];
+        if (self.selectedSegment == index) {
+            [highlightColor setFill];
+            CGContextDrawPath(context, kCGPathFillStroke);
+        }
+        else {
+            CGContextDrawPath(context, kCGPathStroke);
+        }
+        
+        //Seperator shadow
+        
+        CGMutablePathRef shadow = CGPathCreateMutable();
+        
+        CGPathMoveToPoint(shadow, NULL, minX+1, minY);
+        CGPathAddLineToPoint(shadow, NULL, maxX-1, minY);
+        
+        if (self.selectedSegment+1==index) {
+            [highlightColor setStroke];
+        }
+        else {
+            [shadowColor setStroke];
+        }
+        
+        CGContextAddPath(context, shadow);
+        CGContextDrawPath(context, kCGPathStroke);
+        
+        CGPathRelease(box);
+        CGPathRelease(shadow);
+    }
 }
 
--(void)drawBase {
-    CGFloat maxX = NSMaxX(CGRectInset(self.bounds, 0.5, 0.5));
-    CGFloat minX = NSMinX(CGRectInset(self.bounds, 0.5, 0.5));
-    CGFloat minY = NSMinY(CGRectInset(self.bounds, 0.5, 0.5));
-    
-    CGContextRef context = (CGContextRef)[[NSGraphicsContext currentContext] graphicsPort];
-    
-    CGRect bounds = CGRectInset(self.bounds, 0.5, 0.5);
-    bounds.size.height -= 1;
-    bounds.origin.y += 1;
-    
-    NSBezierPath* clipPath = [NSBezierPath bezierPathWithRoundedRect:NSRectFromCGRect(bounds) xRadius:self.radius yRadius:self.radius];
-    
-    //draw background gradient
+-(void)drawBackground {
+    NSBezierPath* clipPath = [NSBezierPath bezierPathWithRoundedRect:self.bounds xRadius:self.radius yRadius:self.radius];
     NSGradient* gradient = [[[NSGradient alloc] initWithStartingColor:gradientColor1 endingColor:gradientColor2] autorelease];
     [gradient drawInBezierPath:clipPath angle:90.0f];
-    
-    //draw border
-    [self.borderColor setStroke];
-    [clipPath stroke];
-    
-    //draw bottom shadow
-    CGMutablePathRef bottomShadow = CGPathCreateMutable();
-    
-    CGPathMoveToPoint(bottomShadow, NULL, minX, minY+self.radius);
-    
-    CGPathAddQuadCurveToPoint(bottomShadow, NULL, minX, minY, minX+self.radius , minY); //90degrees curve (left bottom)
-    CGPathAddLineToPoint(bottomShadow, NULL, maxX-self.radius, minY);
-    CGPathAddQuadCurveToPoint(bottomShadow, NULL, maxX, minY, maxX, self.radius); //90degrees curve (right bottom)
-    
-    [shadowColor setStroke];
-    CGContextAddPath(context, bottomShadow);
-    CGContextDrawPath(context, kCGPathStroke);
-    
-    CGPathRelease(bottomShadow);
 }
 
 -(void)drawRect:(NSRect)dirtyRect {
-    [self drawBase];
+    [self drawBackground];
     for (int i = 0; i<= [self numberOfCells]-1; i++) {
         //If it is the bottom
         if (i == 0) {
-            //bottom
-            [self drawCellInRect:NSInsetRect(NSMakeRect(0, 0, NSWidth(self.bounds), self.cellHeight+2), 1.5, 0.5) index:i];
+            [self drawCell:bottomPart rect:NSInsetRect(NSMakeRect(0, 0, NSWidth(self.bounds), self.cellHeight+2), 0.5, 0.5) index:i];
         }
         else if (i== [self numberOfCells]-1) {
-            //top
-            [self drawCellInRect:NSInsetRect(NSMakeRect(0, (self.cellHeight+2)*i, NSWidth(self.bounds), self.cellHeight+2), 1.5, 0.5) index:i];
+            [self drawCell:topPart rect:NSInsetRect(NSMakeRect(0, (self.cellHeight+2)*i, NSWidth(self.bounds), self.cellHeight+2), 0.5, 0.5) index:i];
         }
         else {
-            //something between
-            [self drawCellInRect:NSInsetRect(NSMakeRect(0, (self.cellHeight+2)*i, NSWidth(self.bounds), self.cellHeight+2), 1.5, 0.5) index:i];
+            [self drawCell:middlePart rect:NSInsetRect(NSMakeRect(0, (self.cellHeight+2)*i, NSWidth(self.bounds), self.cellHeight+2), 0.5, 0.5) index:i];
         }
     }
 }
@@ -314,7 +312,7 @@ NSInteger previouslySelectedSegment = -1;
     NSPoint locationInWindow = [theEvent locationInWindow];
     NSPoint location = [self convertPoint:locationInWindow fromView:[self.window contentView]];
     
-    self.selectedSegment = (CGRectContainsPoint(NSRectToCGRect(self.bounds), NSPointToCGPoint(location))) ? previouslySelectedSegment : -1;
+    self.selectedSegment = (CGRectContainsPoint(self.bounds, NSPointToCGPoint(location))) ? previouslySelectedSegment : -1;
 }
 
 -(void)mouseUp:(NSEvent *)theEvent {
@@ -323,7 +321,7 @@ NSInteger previouslySelectedSegment = -1;
     NSPoint locationInWindow = [theEvent locationInWindow];
     NSPoint location = [self convertPoint:locationInWindow fromView:[self.window contentView]];
     
-    if (CGRectContainsPoint(NSRectToCGRect(self.bounds), NSPointToCGPoint(location))) {
+    if (CGRectContainsPoint(self.bounds, NSPointToCGPoint(location))) {
         NSArray* allValues = self.data.allValues;
         NSString* sel = [allValues objectAtIndex:self.selectedSegment];
         SEL selector = NSSelectorFromString(sel);
