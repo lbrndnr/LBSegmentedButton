@@ -8,12 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 
-typedef enum _RoundedRectPartType {
-    middlePart = 0,
-    topPart = 1,
-    bottomPart = 2
-}RoundedRectPartType;
-
 @interface LBSegmentedButton : NSView {
     
     //Drawing Infos
@@ -39,8 +33,8 @@ typedef enum _RoundedRectPartType {
 
 -(NSInteger)numberOfCells;
 
--(void)drawBackground;
--(void)drawCell:(RoundedRectPartType)type rect:(NSRect)rect index:(NSInteger)index;
--(void)drawTitles;
+-(void)drawBase;
+-(void)drawCellInRect:(NSRect)rect index:(NSInteger)index;
+-(void)drawTitleWithIndex:(NSInteger)index;
 
 @end
